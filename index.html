@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Microsite - Product Knowledge & Lucky Draw</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">✦ BrandName</div>
+      <nav>
+        <a href="#product">Product</a>
+        <a href="#recipes">Recipes</a>
+        <a href="#register">Daftar Lucky Draw</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="eyebrow">Special Event · Juli 2026</p>
+      <h1>Kenali Produk Kami, Coba Resepnya, Menangkan Hadiahnya</h1>
+      <p class="hero-sub">Jelajahi product knowledge, temukan resep favorit, dan daftarkan dirimu untuk kesempatan memenangkan lucky draw.</p>
+      <a href="#register" class="btn btn-primary">Daftar Sekarang</a>
+    </div>
+  </section>
+
+  <section id="product" class="section">
+    <div class="container">
+      <h2 class="section-title">Product Knowledge</h2>
+      <p class="section-sub">Yuk kenalan lebih dekat dengan produk-produk unggulan kami.</p>
+      <div class="grid grid-3" id="productGrid"></div>
+    </div>
+  </section>
+
+  <section id="recipes" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Recipes</h2>
+      <p class="section-sub">Ide olahan simpel yang bisa kamu coba di rumah.</p>
+      <div class="grid grid-3" id="recipeGrid"></div>
+    </div>
+  </section>
+
+  <section id="register" class="section">
+    <div class="container register-wrap">
+
+      <div id="registerForm">
+        <h2 class="section-title center">Daftar Lucky Draw</h2>
+        <p class="section-sub center">Cukup isi nama dan nomor WhatsApp kamu. Satu nomor hanya bisa daftar satu kali.</p>
+
+        <form id="regForm" class="form-card" novalidate>
+          <label>
+            Nama Lengkap
+            <input type="text" id="fullName" placeholder="cth. Ari Nugraha" required>
+          </label>
+          <label>
+            Nomor WhatsApp
+            <input type="tel" id="waNumber" placeholder="cth. 081234567890" required>
+          </label>
+          <p class="form-error" id="formError"></p>
+          <button type="submit" class="btn btn-primary btn-block">Daftar Sekarang</button>
+        </form>
+      </div>
+
+      <div id="thankYou" class="thank-you hidden">
+        <div class="thank-icon">✓</div>
+        <h2>Pendaftaran Berhasil!</h2>
+        <p>Terima kasih, <strong id="thankName"></strong>. Nomor undianmu:</p>
+        <div class="entry-code" id="entryCode"></div>
+        <p class="muted">Simpan nomor ini. Pemenang akan diumumkan langsung di layar saat acara berlangsung.</p>
+        <button class="btn btn-outline" id="registerAnotherBtn">Daftar Nomor Lain</button>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 BrandName Event Microsite — Demo build (dummy data, tanpa database).</p>
+      <a href="admin.html">Admin Dashboard →</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
