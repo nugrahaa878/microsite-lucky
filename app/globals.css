@@ -172,17 +172,142 @@ nav a:hover { color: var(--brand-primary); }
   background: #fff;
   border: 1px solid var(--brand-border);
   border-radius: var(--radius);
-  padding: 28px;
+  overflow: hidden;
   box-shadow: var(--shadow);
 }
 
-.card-emoji {
-  font-size: 2.2rem;
-  margin-bottom: 14px;
+.card-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: var(--brand-bg-alt);
 }
+
+.card-image { object-fit: cover; }
+
+.card-emoji-badge {
+  position: absolute;
+  bottom: -18px;
+  left: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.card-body { padding: 28px 24px 24px; }
 
 .card h3 { margin: 0 0 8px; font-size: 1.1rem; }
 .card p { margin: 0; color: var(--brand-muted); font-size: 0.95rem; }
+
+/* ---------- Countdown ---------- */
+
+.countdown-bar {
+  background: var(--brand-dark);
+  color: #fff;
+  padding: 20px 0;
+}
+
+.countdown-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.countdown-label {
+  font-size: 0.9rem;
+  color: #d5d5e5;
+}
+
+.countdown-units {
+  display: flex;
+  gap: 14px;
+}
+
+.countdown-unit {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 8px 14px;
+  min-width: 64px;
+}
+
+.countdown-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
+.countdown-unit-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #d5d5e5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- FAQ ---------- */
+
+.faq-list {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: #fff;
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius);
+  padding: 4px 24px;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  padding: 18px 0;
+  font-weight: 600;
+  color: var(--brand-dark);
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+  content: "+";
+  float: right;
+  font-weight: 400;
+  color: var(--brand-primary);
+}
+
+.faq-item[open] summary::after { content: "−"; }
+
+.faq-item p {
+  margin: 0 0 18px;
+  color: var(--brand-muted);
+  font-size: 0.95rem;
+}
+
+/* ---------- Terms ---------- */
+
+.terms-list {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--brand-ink);
+  font-size: 0.95rem;
+}
 
 /* ---------- Registration Form ---------- */
 
@@ -262,17 +387,53 @@ nav a:hover { color: var(--brand-primary); }
 /* ---------- Footer ---------- */
 
 .footer {
-  padding: 28px 0;
-  border-top: 1px solid var(--brand-border);
+  background: var(--brand-dark);
+  color: #d5d5e5;
+  padding: 56px 0 0;
+  font-size: 0.9rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 40px;
+}
+
+.footer-brand .logo { color: #fff; margin-bottom: 10px; }
+.footer-tagline { color: #b9b9d0; font-size: 0.88rem; max-width: 320px; }
+
+.footer-col h4 {
+  color: #fff;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 14px;
+}
+
+.footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.footer a { color: #d5d5e5; text-decoration: none; }
+.footer a:hover { color: var(--brand-primary); }
+
+.footer-col address { font-style: normal; display: flex; flex-direction: column; gap: 10px; }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 20px 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  font-size: 0.85rem;
-  color: var(--brand-muted);
+  font-size: 0.82rem;
+  color: #9d9db0;
 }
 
-.footer a { color: var(--brand-primary); text-decoration: none; font-weight: 600; }
+.footer-bottom a { font-weight: 600; color: var(--brand-primary); }
+
+@media (max-width: 860px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+}
 
 /* ============================================================
    Admin Dashboard
@@ -396,6 +557,38 @@ th { color: var(--brand-muted); font-weight: 600; font-size: 0.82rem; text-trans
 
 .draw-placeholder { color: #b9b9d0; font-size: 0.95rem; }
 
+.wheel-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+/* ---------- Draw Method Selector ---------- */
+
+.method-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.method-tab {
+  background: transparent;
+  border: 1px solid var(--brand-border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--brand-muted);
+  cursor: pointer;
+}
+
+.method-tab.active {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: #fff;
+}
+
 .draw-name {
   font-size: 1.5rem;
   font-weight: 700;
@@ -432,6 +625,81 @@ th { color: var(--brand-muted); font-weight: 600; font-size: 0.82rem; text-trans
   padding: 10px 14px;
   font-size: 0.92rem;
 }
+
+/* ---------- Winner Modal ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 20, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  position: relative;
+  background: linear-gradient(135deg, var(--brand-dark), #2d2d55);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  animation: pop 0.4s ease;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #d5d5e5;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.modal-close:hover { color: #fff; }
+
+.winner-modal-card .draw-winner-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.winner-modal-card .draw-name-final {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.winner-modal-details {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.winner-modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.winner-modal-row strong { font-size: 1.05rem; }
 
 /* ---------- Responsive ---------- */
 
