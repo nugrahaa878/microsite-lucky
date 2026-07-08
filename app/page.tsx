@@ -38,7 +38,7 @@ export default function Home() {
         <div className="container">
           <h2 className="section-title">Product Knowledge</h2>
           <p className="section-sub">Yuk kenalan lebih dekat dengan produk-produk unggulan kami.</p>
-          <CardGrid items={PRODUCTS} titleKey="name" />
+          <CardGrid items={PRODUCTS} titleKey="name" basePath="/product" />
         </div>
       </section>
 
@@ -46,7 +46,7 @@ export default function Home() {
         <div className="container">
           <h2 className="section-title">Recipes</h2>
           <p className="section-sub">Ide olahan simpel yang bisa kamu coba di rumah.</p>
-          <CardGrid items={RECIPES} titleKey="title" />
+          <CardGrid items={RECIPES} titleKey="title" basePath="/recipe" />
         </div>
       </section>
 
