@@ -1,28 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import { Participant } from "../lib/participants";
+import { useEffect, useState } from "react";
+import { getPrizes, decrementPrizeStock, addDrawRecord } from "../lib/prizes";
+import { getParticipants, saveParticipants } from "../lib/participants";
 
 type DrawState =
   | { kind: "idle" }
   | { kind: "shuffling"; name: string }
-  | { kind: "none-eligible" };
+  | { kind: "none-eligible" }
+  | { kind: "none-prize" };
 
 export default function ClassicShuffle({
-  eligible,
   isDrawing,
   onDrawStart,
   onWinner,
 }: {
-  eligible: Participant[];
   isDrawing: boolean;
   onDrawStart: () => void;
-  onWinner: (picked: Participant) => void;
+  onWinner: (winner: { participant: { id: string; name: string; nik: string }; prize: { id: string; name: string } }) => void;
 }) {
   const [drawState, setDrawState] = useState<DrawState>({ kind: "idle" });
+  const [prizes, setPrizes] = useState<{ id: string; name: string; remainingStock: number }[]>([]);
+  const [eligible, setEligible] = useState<{ id: string; name: string; nik: string }[]>([]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync initial state from localStorage on mount
+    setPrizes(getPrizes().filter((p) => p.remainingStock > 0));
+    setEligible(getParticipants().filter((p) => !p.hasWon));
+  }, []);
 
   function handleDraw() {
     if (isDrawing) return;
+
+    if (prizes.length === 0) {
+      setDrawState({ kind: "none-prize" });
+      return;
+    }
 
     if (eligible.length === 0) {
       setDrawState({ kind: "none-eligible" });
@@ -36,15 +49,38 @@ export default function ClassicShuffle({
     let elapsed = 0;
 
     const intervalId = setInterval(() => {
-      const randomPick = eligible[Math.floor(Math.random() * eligible.length)];
-      setDrawState({ kind: "shuffling", name: randomPick.name });
+      const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
+      setDrawState({ kind: "shuffling", name: randomPrize.name });
       elapsed += shuffleIntervalMs;
 
       if (elapsed >= shuffleDurationMs) {
         clearInterval(intervalId);
         setDrawState({ kind: "idle" });
-        const picked = eligible[Math.floor(Math.random() * eligible.length)];
-        onWinner(picked);
+
+        const winnerIndex = Math.floor(Math.random() * prizes.length);
+        const prize = prizes[winnerIndex];
+        const updatedPrize = decrementPrizeStock(prize.id);
+        if (!updatedPrize) return;
+
+        const participantIndex = Math.floor(Math.random() * eligible.length);
+        const participant = eligible[participantIndex];
+
+        const updatedParticipants = getParticipants().map((p) =>
+          p.id === participant.id ? { ...p, hasWon: true } : p
+        );
+        saveParticipants(updatedParticipants);
+
+        addDrawRecord({
+          participantId: participant.id,
+          participantName: participant.name,
+          participantNik: participant.nik,
+          prizeId: updatedPrize.id,
+          prizeName: updatedPrize.name,
+          drawnAt: new Date().toISOString(),
+          stockAfter: updatedPrize.remainingStock,
+        });
+
+        onWinner({ participant, prize: { id: updatedPrize.id, name: updatedPrize.name } });
       }
     }, shuffleIntervalMs);
   }
@@ -62,10 +98,15 @@ export default function ClassicShuffle({
             Tidak ada peserta yang memenuhi syarat untuk diundi.
           </span>
         )}
+        {drawState.kind === "none-prize" && (
+          <span className="draw-placeholder">
+            Tidak ada hadiah tersedia untuk diundi.
+          </span>
+        )}
         {drawState.kind === "shuffling" && <span className="draw-name">{drawState.name}</span>}
       </div>
       <button className="btn btn-primary btn-lg" onClick={handleDraw} disabled={isDrawing}>
-        {isDrawing ? "Mengundi..." : "🎉 Undi Pemenang"}
+        {isDrawing ? "Mengundi..." : "🎉 Undi Hadiah"}
       </button>
     </div>
   );

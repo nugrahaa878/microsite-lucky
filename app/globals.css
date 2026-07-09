@@ -795,3 +795,41 @@ th { color: var(--brand-muted); font-weight: 600; font-size: 0.82rem; text-trans
   .stat-row { grid-template-columns: 1fr; }
   .hero h1 { font-size: 1.9rem; }
 }
+
+/* ---------- Admin Prize Registry ---------- */
+
+.prize-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--brand-bg-alt);
+  border-radius: var(--radius);
+}
+
+.prize-form input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--brand-border);
+  font-size: 0.95rem;
+  min-width: 160px;
+}
+
+.prize-form input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+}
+
+.badge-empty {
+  background: #fce4ec;
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.draw-panel .btn-outline {
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+

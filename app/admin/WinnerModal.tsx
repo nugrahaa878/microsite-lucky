@@ -6,7 +6,8 @@ import confetti from "canvas-confetti";
 type Winner = {
   id: string;
   name: string;
-  whatsapp: string;
+  nik: string;
+  prizeName: string;
 };
 
 export default function WinnerModal({
@@ -60,8 +61,12 @@ export default function WinnerModal({
             <strong>{winner.id}</strong>
           </div>
           <div className="winner-modal-row">
-            <span className="muted">Nomor WhatsApp</span>
-            <strong>{winner.whatsapp}</strong>
+            <span className="muted">NIK</span>
+            <strong>{winner.nik}</strong>
+          </div>
+          <div className="winner-modal-row">
+            <span className="muted">Hadiah</span>
+            <strong>{winner.prizeName}</strong>
           </div>
         </div>
         <button className="btn btn-primary btn-block" onClick={onClose}>

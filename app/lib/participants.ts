@@ -1,7 +1,7 @@
 export type Participant = {
   id: string;
+  nik: string;
   name: string;
-  whatsapp: string;
   registeredAt: string;
   hasWon: boolean;
 };
@@ -21,8 +21,8 @@ export function clearParticipants(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-export function normalizePhone(phone: string): string {
-  return phone.replace(/[\s\-()]/g, "");
+export function normalizeNik(nik: string): string {
+  return nik.replace(/[\s\-]/g, "");
 }
 
 export function formatDate(iso: string): string {

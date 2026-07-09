@@ -6,9 +6,9 @@ const DUMMY_NAMES = [
   "Yusuf Hidayat", "Melati Sari", "Bagus Prasetyo", "Ayu Kusuma", "Dimas Saputra",
 ];
 
-function randomPhone(): string {
-  let n = "08";
-  for (let i = 0; i < 10; i++) n += Math.floor(Math.random() * 10);
+function randomNik(): string {
+  let n = "";
+  for (let i = 0; i < 16; i++) n += Math.floor(Math.random() * 10);
   return n;
 }
 
@@ -20,18 +20,18 @@ function randomPastDate(): string {
 
 export function seedDummyData(): Participant[] {
   const existing = getParticipants();
-  const usedPhones = new Set(existing.map((p) => p.whatsapp));
+  const usedNiks = new Set(existing.map((p) => p.nik));
   const newEntries: Participant[] = [];
 
   DUMMY_NAMES.forEach((name) => {
-    let phone = randomPhone();
-    while (usedPhones.has(phone)) phone = randomPhone();
-    usedPhones.add(phone);
+    let nik = randomNik();
+    while (usedNiks.has(nik)) nik = randomNik();
+    usedNiks.add(nik);
 
     newEntries.push({
       id: "P" + String(existing.length + newEntries.length + 1).padStart(4, "0"),
+      nik,
       name,
-      whatsapp: phone,
       registeredAt: randomPastDate(),
       hasWon: false,
     });
@@ -56,12 +56,12 @@ export function exportCsv(participants: Participant[]): void {
     return;
   }
 
-  const headers = ["No", "ID", "Nama", "No WhatsApp", "Waktu Daftar", "Status"];
+  const headers = ["No", "ID", "NIK", "Nama", "Waktu Daftar", "Status"];
   const rows = participants.map((p, idx) => [
     idx + 1,
     p.id,
+    p.nik,
     p.name,
-    p.whatsapp,
     formatDate(p.registeredAt),
     p.hasWon ? "Pemenang" : "Terdaftar",
   ]);

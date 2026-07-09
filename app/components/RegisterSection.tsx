@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { getParticipants, saveParticipants, normalizePhone } from "../lib/participants";
+import { useEffect, useState } from "react";
+import { getParticipants, saveParticipants, normalizeNik } from "../lib/participants";
+
+const QUOTA = 1000;
 
 export default function RegisterSection() {
   const [submitted, setSubmitted] = useState(false);
@@ -9,49 +11,63 @@ export default function RegisterSection() {
   const [entryCode, setEntryCode] = useState("");
   const [formError, setFormError] = useState("");
   const [fullName, setFullName] = useState("");
-  const [waNumber, setWaNumber] = useState("");
+  const [nik, setNik] = useState("");
+  const [quotaLeft, setQuotaLeft] = useState(QUOTA);
+  const [isQuotaFull, setIsQuotaFull] = useState(false);
+
+  useEffect(() => {
+    const participants = getParticipants();
+    const left = Math.max(0, QUOTA - participants.length);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync initial state from localStorage on mount
+    setQuotaLeft(left);
+    setIsQuotaFull(left <= 0);
+  }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFormError("");
 
     const name = fullName.trim();
-    const wa = normalizePhone(waNumber.trim());
+    const normalizedNik = normalizeNik(nik.trim());
 
-    if (!name || !wa) {
-      setFormError("Nama dan nomor WhatsApp wajib diisi.");
+    if (!name || !normalizedNik) {
+      setFormError("Nama dan NIK wajib diisi.");
       return;
     }
 
-    if (!/^\d{8,15}$/.test(wa)) {
-      setFormError("Format nomor WhatsApp tidak valid.");
+    if (!/^\d{10,20}$/.test(normalizedNik)) {
+      setFormError("Format NIK tidak valid. Masukkan 10-20 digit angka.");
       return;
     }
 
-    const participants = getParticipants();
-    const isDuplicate = participants.some((p) => p.whatsapp === wa);
+    const currentParticipants = getParticipants();
 
-    if (isDuplicate) {
-      setFormError("Nomor WhatsApp ini sudah terdaftar. Satu nomor hanya bisa daftar sekali.");
+    if (currentParticipants.some((p) => p.nik === normalizedNik)) {
+      setFormError("NIK ini sudah terdaftar. Satu NIK hanya bisa daftar sekali.");
+      return;
+    }
+
+    if (currentParticipants.length >= QUOTA) {
+      setFormError("Kuota pendaftaran sudah penuh (maks 1000 peserta).");
       return;
     }
 
     const entry = {
-      id: "P" + String(participants.length + 1).padStart(4, "0"),
+      id: "P" + String(currentParticipants.length + 1).padStart(4, "0"),
+      nik: normalizedNik,
       name,
-      whatsapp: wa,
       registeredAt: new Date().toISOString(),
       hasWon: false,
     };
 
-    participants.push(entry);
-    saveParticipants(participants);
+    const updated = currentParticipants.concat(entry);
+    saveParticipants(updated);
 
     setThankName(entry.name);
     setEntryCode(entry.id);
     setSubmitted(true);
     setFullName("");
-    setWaNumber("");
+    setNik("");
   }
 
   function handleRegisterAnother() {
@@ -66,35 +82,39 @@ export default function RegisterSection() {
           <div id="registerForm">
             <h2 className="section-title center">Daftar Lucky Draw</h2>
             <p className="section-sub center">
-              Cukup isi nama dan nomor WhatsApp kamu. Satu nomor hanya bisa daftar satu kali.
+              {isQuotaFull
+                ? "Mohon maaf, kuota pendaftaran sudah penuh."
+                : `Isi NIK dan nama lengkap kamu. Sisa kuota: ${quotaLeft} dari ${QUOTA} peserta.`}
             </p>
 
-            <form className="form-card" noValidate onSubmit={handleSubmit}>
-              <label>
-                Nama Lengkap
-                <input
-                  type="text"
-                  placeholder="cth. Ari Nugraha"
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-              </label>
-              <label>
-                Nomor WhatsApp
-                <input
-                  type="tel"
-                  placeholder="cth. 081234567890"
-                  required
-                  value={waNumber}
-                  onChange={(e) => setWaNumber(e.target.value)}
-                />
-              </label>
-              <p className="form-error">{formError}</p>
-              <button type="submit" className="btn btn-primary btn-block">
-                Daftar Sekarang
-              </button>
-            </form>
+            {!isQuotaFull && (
+              <form className="form-card" noValidate onSubmit={handleSubmit}>
+                <label>
+                  Nama Lengkap
+                  <input
+                    type="text"
+                    placeholder="cth. Ari Nugraha"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                  />
+                </label>
+                <label>
+                  NIK Karyawan
+                  <input
+                    type="text"
+                    placeholder="cth. 1234567890123456"
+                    required
+                    value={nik}
+                    onChange={(e) => setNik(e.target.value)}
+                  />
+                </label>
+                <p className="form-error">{formError}</p>
+                <button type="submit" className="btn btn-primary btn-block">
+                  Daftar Sekarang
+                </button>
+              </form>
+            )}
           </div>
         ) : (
           <div className="thank-you">
