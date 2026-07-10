@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CardGrid from "./components/CardGrid";
 import Countdown from "./components/Countdown";
 import Faq from "./components/Faq";
@@ -10,7 +11,9 @@ export default function Home() {
     <>
       <header className="topbar">
         <div className="container topbar-inner">
-          <div className="logo">✦ Sasa</div>
+          <div className="logo">
+            <Image src="https://www.sasa.co.id/themes/v1/assets/img/logo_white.png" alt="Sasa" width={90} height={28} className="logo-img" />
+          </div>
           <nav>
             <a href="#product">Product</a>
             <a href="#recipes">Recipes</a>

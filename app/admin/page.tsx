@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Participant, getParticipants, clearParticipants, formatDate } from "../lib/participants";
@@ -122,7 +123,8 @@ export default function AdminPage() {
       <header className="topbar">
         <div className="container topbar-inner">
           <div className="logo">
-            ✦ Sasa <span className="admin-tag">Admin</span>
+            <Image src="https://www.sasa.co.id/themes/v1/assets/img/logo_white.png" alt="Sasa" width={90} height={28} className="logo-img" />
+            <span className="admin-tag">Admin</span>
           </div>
           <nav>
             <Link href="/">← Kembali ke Microsite</Link>

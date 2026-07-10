@@ -39,10 +39,10 @@ body {
 /* ---------- Topbar ---------- */
 
 .topbar {
-  border-bottom: 1px solid var(--brand-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   position: sticky;
   top: 0;
-  background: #fff;
+  background: var(--brand-dark);
   z-index: 10;
 }
 
@@ -56,7 +56,14 @@ body {
 .logo {
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--brand-dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 28px;
+  width: auto;
 }
 
 .admin-tag {
@@ -72,7 +79,7 @@ body {
 nav a {
   margin-left: 20px;
   text-decoration: none;
-  color: var(--brand-ink);
+  color: #d5d5e5;
   font-size: 0.95rem;
   font-weight: 500;
 }

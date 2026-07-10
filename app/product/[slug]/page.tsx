@@ -21,7 +21,9 @@ export default async function ProductDetailPage({
     <>
       <header className="topbar">
         <div className="container topbar-inner">
-          <Link href="/" className="logo">✦ Sasa</Link>
+          <Link href="/" className="logo">
+            <Image src="https://www.sasa.co.id/themes/v1/assets/img/logo_white.png" alt="Sasa" width={90} height={28} className="logo-img" />
+          </Link>
           <nav>
             <Link href="/#product">Product</Link>
             <Link href="/#recipes">Recipes</Link>
